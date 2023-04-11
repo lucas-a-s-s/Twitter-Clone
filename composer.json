@@ -1,0 +1,16 @@
+{
+    "name": "vendorname/miniframework",
+    "require": {
+        "php": ">= 7.0"
+    },
+    "authors": [{
+        "name": "Lucas Andrade da Silva Santos",
+        "email": "lucas.-2010@hotmail.com"
+    }],
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/",
+            "MF\\": "vendor/MF/"
+        }
+    }
+}

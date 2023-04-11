@@ -1,2 +1,2 @@
-# Twitter-Clone
-Projeto Twitter Clone do curso de desenvolvimento web completo
+# Miniframework
+Projeto do modulo MVC do curso de desenvolvimento web completo

@@ -54,6 +54,21 @@ class Usuario extends Model
     return $valido;
   }
 
+  public function getUsuarioPorEmail(){
+    $qry = "SELECT
+              nome,
+              email
+            FROM
+              usuarios
+            WHERE
+              email = :email";
+    $stmt = $this->db->prepare($qry);
+    $stmt->bindValue(':email', $this->__get('email'));
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO:: FETCH_ASSOC);
+  }
+
 }
 
 

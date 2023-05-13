@@ -19,32 +19,28 @@ class AppController extends Action
       header('location: /?login=error');
     }
 
+  }
+  public function tweet()
+  {
+    session_start();
 
+    if (
+      !empty($_SESSION['id']) && !empty($_SESSION['nome'])
+    ) {
 
-    // $usuario = Container::getModel('Usuario');
+      $tweet = Container::getModel('tweet');
+      $tweet->__set('tweet', $_POST['tweet']);
+      $tweet->__set('id_usuario', $_SESSION['id']);
 
-    // $usuario->__set('email', $_POST['email']);
-    // $usuario->__set('senha', $_POST['senha']);
+      $tweet->salvar();
 
+    } else {
+      header('location: /?login=error');
+    }
 
-
-    // $retorno = $usuario->autenticar();
-
-    // if (!empty($usuario->__get('id')) && !empty($usuario->__get('nome'))) {
-
-    //   session_start();
-
-    //   $_SESSION['id'] = $usuario->__get('id');
-    //   $_SESSION['nome'] = $usuario->__get('nome');
-
-    //   header('location: /timeline');
-    // } else {
-    //   header('location: /?login=error');
-    // }
 
 
   }
-
 
 }
 ?>

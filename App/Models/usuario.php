@@ -10,15 +10,18 @@ class Usuario extends Model
   private $email;
   private $senha;
 
-  public function __get($atributo){
+  public function __get($atributo)
+  {
     return $this->$atributo;
-  } 
+  }
 
-  public function __set($atributo, $valor){
+  public function __set($atributo, $valor)
+  {
     $this->$atributo = $valor;
-  } 
-  
-  public function salvar(){
+  }
+
+  public function salvar()
+  {
     $query = "INSERT INTO 
                 usuarios(
                   nome,
@@ -38,23 +41,25 @@ class Usuario extends Model
     return $this;
   }
 
-  public function validarCadastro(){
+  public function validarCadastro()
+  {
     $valido = true;
 
-    if(strlen($this->__get('nome')) < 3){
+    if (strlen($this->__get('nome')) < 3) {
       $valido = false;
     }
-    if(strlen($this->__get('email')) < 3){
+    if (strlen($this->__get('email')) < 3) {
       $valido = false;
     }
-    if(strlen($this->__get('senha')) < 3){
+    if (strlen($this->__get('senha')) < 3) {
       $valido = false;
     }
 
     return $valido;
   }
 
-  public function getUsuarioPorEmail(){
+  public function getUsuarioPorEmail()
+  {
     $qry = "SELECT
               nome,
               email
@@ -66,9 +71,10 @@ class Usuario extends Model
     $stmt->bindValue(':email', $this->__get('email'));
     $stmt->execute();
 
-    return $stmt->fetchAll(\PDO:: FETCH_ASSOC);
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
-  public function autenticar(){
+  public function autenticar()
+  {
     $qry = "SELECT
               id,
               nome,
@@ -84,8 +90,14 @@ class Usuario extends Model
     $stmt->bindValue(':senha', $this->__get('senha'));
     $stmt->execute();
 
-    $usuario = $stmt->fetch(\PDO:: FETCH_ASSOC);
-    return $usuario;
+    $usuario = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+    if (!empty($usuario['id']) && !empty($usuario['nome'])) {
+      $this->__set('id', $usuario['id']);
+      $this->__set('nome', $usuario['nome']);
+    }
+
+    return $this;
   }
 
 }

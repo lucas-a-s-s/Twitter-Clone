@@ -99,6 +99,22 @@ class Usuario extends Model
 
     return $this;
   }
+  public function getAll()
+  {
+    $qry = "SELECT
+              id,
+              nome,
+              email
+            FROM
+              usuarios
+            WHERE
+              nome like :nome";
+    $stmt = $this->db->prepare($qry);
+    $stmt->bindValue(':nome', '%' . $this->__get('nome') . '%');
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+  }
 
 }
 

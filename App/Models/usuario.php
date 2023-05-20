@@ -99,18 +99,66 @@ class Usuario extends Model
 
     return $this;
   }
+  public function seguirUsuario($id_usuario_seguindo)
+  {
+    $qry = "INSERT INTO
+              usuario_seguidores
+              (
+                id_usuario,
+                id_usuario_seguindo
+              )values(
+                :id_usuario,
+                :id_usuario_seguindo
+              )";
+    $stmt = $this->db->prepare($qry);
+    $stmt->bindValue(':id_usuario', $this->__get('id'));
+    $stmt->bindValue(':id_usuario_seguindo', $id_usuario_seguindo);
+    $stmt->execute();
+
+    return true;
+  }
+  public function deixarSeguirUsuario($id_usuario_seguindo)
+  {
+    $qry = "DELETE
+            FROM
+              usuario_seguidores
+            WHERE
+              id_usuario = :id_usuario
+            AND
+              id_usuario_seguindo = :id_usuario_seguindo
+    ";
+    $stmt = $this->db->prepare($qry);
+    $stmt->bindValue(':id_usuario', $this->__get('id'));
+    $stmt->bindValue(':id_usuario_seguindo', $id_usuario_seguindo);
+    $stmt->execute();
+
+    return true;
+  }
   public function getAll()
   {
     $qry = "SELECT
-              id,
-              nome,
-              email
+              us.id,
+              us.nome,
+              us.email,
+              (
+                SELECT 
+                  COUNT(*)
+                FROM
+                  usuario_seguidores usg
+                WHERE
+                  usg.id_usuario = :id_usuario
+                and
+                  us.id = usg.id_usuario_seguindo
+              ) seguindo_sn
             FROM
-              usuarios
+              usuarios us
             WHERE
-              nome like :nome";
+              us.nome like :nome
+            AND
+              us.id <> :id_usuario ";
     $stmt = $this->db->prepare($qry);
     $stmt->bindValue(':nome', '%' . $this->__get('nome') . '%');
+    $stmt->bindValue(':id_usuario', $this->__get('id'));
     $stmt->execute();
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);

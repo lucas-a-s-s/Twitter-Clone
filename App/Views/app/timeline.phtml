@@ -68,36 +68,31 @@
           </form>
         </div>
       </div>
+      <?php
+      foreach ($this->view->tweets as $id_tweet => $tweet) { ?>
+        <div class="row tweet">
+          <div class="col">
+            <p><strong>
+                <?= $tweet['nome'] ?>
+              </strong> <span class="text text-muted">-
+                <small>
+                  <?= $tweet['data'] ?>
+                </small>
+              </span></p>
+            <p>
+              <?= $tweet['tweet'] ?>
+            </p>
 
-      <div class="row tweet">
-        <div class="col">
-          <p><strong>Nome do Usuário</strong> <span class="text text-muted">- data tweet</span></p>
-          <p>Conteúdo do tweet</p>
-
-          <br />
-          <form>
-            <div class="col d-flex justify-content-end">
-              <button type="submit" class="btn btn-danger"><small>Remover</small></button>
-            </div>
-          </form>
+            <br />
+            <form>
+              <div class="col d-flex justify-content-end">
+                <button type="submit" class="btn btn-danger"><small>Remover</small></button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-
-      <div class="row tweet">
-        <div class="col">
-          <p><strong>Nome do Usuário</strong> <span class="text text-muted">- data tweet</span></p>
-          <p>Conteúdo do tweet</p>
-
-          <br />
-          <form>
-            <div class="col d-flex justify-content-end">
-              <button type="submit" class="btn btn-danger"><small>Remover</small></button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-
+      <?php }
+      ?>
     </div>
 
 

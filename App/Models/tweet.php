@@ -37,6 +37,31 @@ class Tweet extends Model
 
     return $this;
   }
+  //recuperar 
+  public function getAll()
+  {
+    $query = "SELECT
+                tw.id,
+                tw.id_usuario,
+                tw.tweet,
+                DATE_FORMAT(tw.data,'%d/%m/%Y %h:%i') data,
+                us.nome
+              FROM
+                tweets tw,
+                usuarios us
+              WHERE
+                tw.id_usuario = :id
+              and
+                tw.id_usuario = us.id 
+              ORDER BY tw.data desc
+                ";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindValue(':id', $this->__get('id_usuario'));
+    // $stmt->bindValue(':tweet', $this->__get('tweet'));
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+  }
 
   public function validarCadastro()
   {

@@ -69,6 +69,65 @@ class Tweet extends Model
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
+  public function getPorPagina($limit, $offset)
+  {
+    $query = "SELECT
+                tw.id,
+                tw.id_usuario,
+                tw.tweet,
+                DATE_FORMAT(tw.data,'%d/%m/%Y %h:%i') data,
+                us.nome
+              FROM
+                tweets tw
+                left join usuarios us on (tw.id_usuario = us.id)
+              WHERE
+                tw.id_usuario = :id
+              or 
+                tw.id_usuario in (
+                  select 
+                    id_usuario_seguindo
+                  from
+                    usuario_seguidores 
+                  where
+                    id_usuario = :id
+                )
+              ORDER BY tw.data desc
+              limit
+                  $limit
+              offset
+                  $offset
+                ";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindValue(':id', $this->__get('id_usuario'));
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+  }
+  public function getTotalRegistros()
+  {
+    $query = "SELECT
+                count(*) total
+              FROM
+                tweets tw
+                left join usuarios us on (tw.id_usuario = us.id)
+              WHERE
+                tw.id_usuario = :id
+              or 
+                tw.id_usuario in (
+                  select 
+                    id_usuario_seguindo
+                  from
+                    usuario_seguidores 
+                  where
+                    id_usuario = :id
+                )
+                ";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindValue(':id', $this->__get('id_usuario'));
+    $stmt->execute();
+
+    return $stmt->fetch(\PDO::FETCH_ASSOC);
+  }
 
   public function validarCadastro()
   {

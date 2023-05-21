@@ -12,7 +12,16 @@ class AppController extends Action
     $this->validaAutenticacao();
     $tweet = Container::getModel('tweet');
     $tweet->__set('id_usuario', $_SESSION['id']);
-    $this->view->tweets = $tweet->getAll();
+
+    $total_registro_pagina = 5;
+    $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    $deslocamento = (($pagina - 1) * $total_registro_pagina);
+
+    $this->view->tweets = $tweet->getPorPagina($total_registro_pagina, $deslocamento);
+    $total_tweets = $tweet->getTotalRegistros();
+    $this->view->totalPaginas = ceil($total_tweets['total'] / $total_registro_pagina);
+    $this->view->pagina_ativa = $pagina;
+
 
     $usuario = Container::getModel('Usuario');
     $usuario->__set('id', $_SESSION['id']);

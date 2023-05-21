@@ -103,6 +103,23 @@
         </div>
       <?php }
       ?>
+      <div class="row mt-5">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="?pagina=<?= $this->view->pagina_ativa - 1 ?>">Anterior</a>
+            </li>
+            <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++) { ?>
+              <li class="page-item <?= $this->view->pagina_ativa == $i ? 'active' : '' ?>"><a class="page-link"
+                  href="?pagina=<?= $i ?>">
+                  <?= $i ?>
+                </a></li>
+              <?php
+            } ?>
+            <li class="page-item"><a class="page-link" href="?pagina=<?= $this->view->pagina_ativa + 1 ?>">Proxima</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
 
 

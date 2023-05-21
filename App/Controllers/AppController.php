@@ -38,12 +38,18 @@ class AppController extends Action
   public function tweet()
   {
     $this->validaAutenticacao();
-
     $tweet = Container::getModel('tweet');
-    $tweet->__set('tweet', $_POST['tweet']);
-    $tweet->__set('id_usuario', $_SESSION['id']);
 
-    $tweet->salvar();
+    $excluir = isset($_POST['excluir']) ? $_POST['excluir'] : '';
+    if (!empty($excluir)) {
+      $tweet->__set('id', $_POST['idTweet']);
+      $tweet->excluir();
+
+    } else {
+      $tweet->__set('tweet', $_POST['tweet']);
+      $tweet->__set('id_usuario', $_SESSION['id']);
+      $tweet->salvar();
+    }
     header('location: /timeline');
   }
   public function validaAutenticacao()

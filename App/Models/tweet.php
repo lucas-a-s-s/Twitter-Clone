@@ -187,6 +187,20 @@ class Tweet extends Model
 
     return $this;
   }
+  public function excluir()
+  {
+    $qry = "DELETE
+            FROM
+              tweets
+            WHERE
+              id = :id_tweet
+    ";
+    $stmt = $this->db->prepare($qry);
+    $stmt->bindValue(':id_tweet', $this->__get('id'));
+    $stmt->execute();
+
+    return true;
+  }
 
 }
 

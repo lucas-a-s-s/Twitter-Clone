@@ -47,17 +47,24 @@ class Tweet extends Model
                 DATE_FORMAT(tw.data,'%d/%m/%Y %h:%i') data,
                 us.nome
               FROM
-                tweets tw,
-                usuarios us
+                tweets tw
+                left join usuarios us on (tw.id_usuario = us.id)
               WHERE
                 tw.id_usuario = :id
-              and
-                tw.id_usuario = us.id 
+              or 
+                tw.id_usuario in (
+                  select 
+                    id_usuario_seguindo
+                  from
+                    usuario_seguidores 
+                  where
+                    id_usuario = :id
+                )
+                
               ORDER BY tw.data desc
                 ";
     $stmt = $this->db->prepare($query);
     $stmt->bindValue(':id', $this->__get('id_usuario'));
-    // $stmt->bindValue(':tweet', $this->__get('tweet'));
     $stmt->execute();
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
